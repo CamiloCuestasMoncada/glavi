@@ -42,14 +42,40 @@ function Homeanimations() {
               height={1450}
             />
           </div>
+          <div className={styles.boxContainer}> 
+          <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            delay: 4,
+            repeat: Infinity,
+            repeatType: "reverse",
+            duration: 2,
+            repeatDelay: 6,
+          }}
+          >
+        
+            <Image
+              src="/cajas.svg"
+              alt="Picture of the author"
+              width={170}
+              height={71}
+            />
+             </motion.div>
+          </div>
+         
+
           <div className={styles.truckContainer}>
             <motion.div
               initial={{ y: 0, x: 0, scale: 1 }}
               animate={{ y: 154, x: -297, scale: 1 }}
+              /*initial={{ y: 0, x: 0, scale: 1 }}
+              animate={{ y: 0, x: 0, scale: 1 }}*/
               transition={{
+                type: "spring",
                 repeat: Infinity,
                 repeatType: "reverse",
-                duration: 5,
+                duration: 4,
                 repeatDelay: 4,
               }}
               className={styles.truck}
