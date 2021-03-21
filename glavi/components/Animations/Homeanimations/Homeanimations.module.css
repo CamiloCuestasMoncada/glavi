@@ -1,0 +1,32 @@
+.truck{
+    position: relative;
+    
+   
+      
+  }
+  
+  .truckContainer{
+    margin: 0;
+      position: relative;
+      bottom: 444px;
+      right: -634px;
+  }
+  
+  .animations{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+    /* bottom: 197px; */
+    /* padding-left: 470px; */
+    overflow: hidden;
+    
+  }
+  
+  .animationsContainer{
+      width: 700px;
+      position: relative;
+      margin: 0;
+      overflow: hidden;
+  }

@@ -1,0 +1,25 @@
+.button {
+  margin-bottom: 0.8em;
+  padding: 4px 7px 4px 7px;
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+  color: #ffffff;
+  background-color: transparent;
+  cursor: pointer;
+  border-style: none;
+}
+
+.button:hover {
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+  transition: all 0.5s ease-out;
+}
+
+.button:focus {
+  outline-width: 12px;
+  outline-color: #f570b9a1;
+  border-color: none;
+  box-shadow: 0 0 8px 3px #e35c92;
+  transition: all 0.5s ease-out;
+}
