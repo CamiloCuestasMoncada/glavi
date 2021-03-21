@@ -8,8 +8,8 @@
   .truckContainer{
     margin: 0;
       position: relative;
-      bottom: 444px;
-      right: -634px;
+      bottom: 490px;
+      right: -654px;
   }
   
   .animations{
@@ -29,4 +29,11 @@
       position: relative;
       margin: 0;
       overflow: hidden;
+  }
+
+  .boxContainer{
+    width: 108px;
+    position: relative;
+    right: -410px;
+    bottom: 272px;
   }
