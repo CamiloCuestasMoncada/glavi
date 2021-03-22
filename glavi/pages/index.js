@@ -9,8 +9,8 @@ import Grid from "@material-ui/core/Grid";
 import Menuhome from "./../components/Menuhome/index";
 import Image from "next/image";
 import Truck from "./../components/Truck/index";
-import Homeanimations from './../components/Animations/Homeanimations/index';
-
+import Homeanimations from "./../components/Animations/Homeanimations/index";
+import Recommendations from "./../components/Recommendations/index";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,10 +38,22 @@ export default function Home() {
         <div>
           <Menuhome />
         </div>
-        
-       <div className={styles.imgHomeContainer}>
-         <Homeanimations/>
-       </div>
+
+        <div className={styles.imgHomeContainer}>
+          <Homeanimations />
+        </div>
+      </section>
+
+      <section className={styles.recommendations}>
+        <h2 className={styles.titleRecommendations}>
+          Nuestra prioridad es tu felicidad
+        </h2>
+        <div className={styles.recommendationsContainer}>
+          <Recommendations />
+          <Recommendations />
+          <Recommendations />
+          
+        </div>
       </section>
 
       <section className={classes.root}>

@@ -124,6 +124,7 @@
 .sectionHomeContainer{
   background: linear-gradient(to right, #ea98c2, #ca8be8, #59cae2);
   display: flex;
+  height: 817px;
 }
 
 .imgHomeContainer{
@@ -131,10 +132,30 @@
 display: flex;
 justify-content: center;
 align-items: center;
-
-padding-bottom: 70px;
 overflow: hidden;
+padding-bottom: 70px;
 
+
+}
+
+.recommendations{
+  
+  padding: 20px 70px 20px 70px;
+ 
+}
+
+.titleRecommendations{
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 24px;
+  color: #ca8be8;
+}
+
+.recommendationsContainer{
+  margin-top: 40px;
+  margin-bottom: 40px;;
+  display: flex;
+  justify-content: space-between;
 
 }
 

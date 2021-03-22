@@ -1,5 +1,5 @@
 .Menuhome {
-  margin-top:70px;
+  margin-top: 258px;
   height: 400px;
 }
 /*.buttonHomeMenu{
@@ -29,10 +29,11 @@
 .buttonGroup{
   display: flex;
   justify-content: space-between;
+  width: 600px;
 }
 
 .buttonDropGroup{
-  margin-top: 13px;
+  margin-top: 27px;
   display: flex;
   justify-content: space-between;
 }
@@ -40,4 +41,5 @@
 .buttonSearch{
   display: flex;
   justify-content: center;
+  margin-top: 17px;
 }
