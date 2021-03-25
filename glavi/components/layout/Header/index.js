@@ -4,9 +4,9 @@ import Image from "next/image";
 
 import MenuIcon from "@material-ui/icons/Menu";
 import { Icon } from "@material-ui/core";
-import Buttonmenu from "./../Buttonmenu/index";
-import Buttondropdawn from "../Buttondropdawn/index";
-import Buttonlink from "./../Buttonlink/index"
+/*import Buttonmenu from "../../common/Buttonmenu/index";*/
+import Buttondropdawn from "../../common/Buttondropdawn/index";
+import Buttonlink from "../../common/Buttonlink/index"
 
 function Header() {
   return (
@@ -14,14 +14,18 @@ function Header() {
       <nav className={styles.navbar}>
         <div className={styles.navbar_container}>
           <div className={styles.itemsNavbar}>
-            <a className="" href="#">
+            <div className={styles.logo}>
+            
               <Image
+              
                 src="/logo.svg"
                 alt="Logo de glavi inmobiliaria"
-                width={200}
-                height={150}
+                width={170}
+                height={110}
               />
-            </a>
+            
+            </div>
+            
 
             <div className={styles.buttonContainer}>
               <ul>
