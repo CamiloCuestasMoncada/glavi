@@ -1,0 +1,23 @@
+.footerContainer {
+  width: 100%;
+  height: 340px;
+  background-color: #b994e7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 70px;
+  flex-direction: column;
+}
+
+.socialMedia {
+  color: #e6d3f7;
+}
+
+.copyrigth {
+  display: flex;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  color: #f0e7f9;
+}
+

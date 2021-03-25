@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Buttondrophome from "./../Buttondrophome/index";
-import Buttonhome from "./../Buttonhome/index";
+import Buttondrophome from "../../common/Buttondrophome/index";
+import Buttonhome from "../../common/Buttonhome/index";
 import styles from "./Menuhome.module.css";
 
 const Menuhome = () => {

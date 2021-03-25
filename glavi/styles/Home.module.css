@@ -147,7 +147,7 @@ padding-bottom: 70px;
 .titleRecommendations{
   text-align: center;
   font-family: "Inter", sans-serif;
-  font-size: 24px;
+  font-size: 33px;
   color: #ca8be8;
 }
 
@@ -159,3 +159,27 @@ padding-bottom: 70px;
 
 }
 
+.break{
+  border: none;
+    height: 20px;
+    width: 90%;
+    height: 50px;
+    margin-top: 0;
+    border-bottom: 1px solid #5acae2;
+    box-shadow: 0 20px 20px -20px #5a5a5a;
+    margin: -50px auto 10px;
+    margin-bottom: 93px;
+    margin-top: 50px;
+
+
+}
+
+.titleDestacados{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #97c9eb;
+  padding-right: 7px;
+  
+}
