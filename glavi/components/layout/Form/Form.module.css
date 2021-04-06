@@ -154,3 +154,7 @@
       background-image: none;
       appearance: none;
   }
+
+  .errorMensaje{
+    color: crimson;
+  }

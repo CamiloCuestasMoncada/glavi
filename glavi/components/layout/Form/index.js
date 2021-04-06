@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { ErrorMessage } from "@hookform/error-message";
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -10,31 +11,7 @@ import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import styles from "./Form.module.css";
 import Select from "react-select";
-
-const SelectForm = () => {
-  const { control, handleSubmit } = useForm();
-
-  return (
-    <>
-      <label>Elija el tipo de propiedad</label>
-      <Controller
-        name="tipopDePropiedad"
-        as={Select}
-        options={[
-          { value: "Casa", label: "Casa" },
-          { value: "Apartamento", label: "Apartamento" },
-          { value: "Oficina", label: "Oficina" },
-          { value: "Local", label: "Local Comercial" },
-          { value: "Finca", label: "Finca" },
-          { value: "Lote", label: "Lote" },
-          { value: "Bodega", label: "Bodega" },
-        ]}
-        control={control}
-        defaultValue=""
-      />
-    </>
-  );
-};
+import { createMuiTheme } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +27,47 @@ const useStyles = makeStyles((theme) => ({
   resetContainer: {
     padding: theme.spacing(3),
   },
+  bgColor: {
+    backgroundColor: '#eaeaf0',
+  },
+  
+  stepIcon: {
+    color: "pink"
+  },
+
+  
+  step: {
+    "&$completed": {
+      color: "#85cfe8"
+    },
+    "&$active": {
+      color: "#d49de9"
+    },
+    
+  },
+  alternativeLabel: {},
+  active: {}, //needed so that the &$active tag works
+  completed: {},
+  disabled: {},
+  labelContainer: {
+    "&$alternativeLabel": {
+      marginTop: 0
+    },
+  },
+
+
+
+
+
 }));
+
+
+
+
+
+
+
+
 
 function getSteps() {
   return [
@@ -67,14 +84,76 @@ export default function Form() {
   const [nombre, setNombre] = useState("");
   const [mail, setMail] = useState("");
   const [telefono, setTelefono] = useState("");
+  const [zona, setZona] = useState("");
+  const [realEstate, setRealEstate] = useState("inmueble");
   const mensajeFinal = () => {
     return (
-      <div>{`Hola Scarleth, el cliente ${nombre} esta inetresado en vender, su email es: ${mail} y su telefono ${telefono}`}</div>
+      <div>{`Hola Scarleth, el cliente ${nombre} tiene interes en vender su ${realEstate},  cuya ubicación se encuentra en  ${zona}, escribele a: ${mail} o puedes llamar al ${telefono} contactale lo antes posible. ¡Éxitos!`}</div>
+    );
+  };
+
+  const SelectForm = () => {
+    const {
+      register,
+      handleSubmit,
+      watch,
+      errors,
+      setValue,
+      control,
+    } = useForm();
+    const onSubmit = (data) => {
+      setRealEstate(
+        JSON.stringify(data.realEstate.label).replace(/['"]+/g, "")
+      );
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    };
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <label>Elija el tipo de propiedad</label>
+        <Controller
+          name="realEstate"
+          as={Select}
+          options={[
+            { value: "Casa", label: "Casa" },
+            { value: "Apartamento", label: "Apartamento" },
+            { value: "Oficina", label: "Oficina" },
+            { value: "Local", label: "Local Comercial" },
+            { value: "Finca", label: "Finca" },
+            { value: "Lote", label: "Lote" },
+            { value: "Bodega", label: "Bodega" },
+          ]}
+          control={control}
+          defaultValue="Inmueble"
+          
+        />
+
+        
+        <Button
+          disabled={activeStep === 0}
+          onClick={handleBack}
+          className={classes.button}
+        >
+          Atras
+        </Button>
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.button}
+        >
+          {activeStep === steps.length - 1 ? "Confirmar" : "Siguiente"}
+        </Button>
+      </form>
     );
   };
 
   const InputForm = (props) => {
-    const { register, handleSubmit, watch, errors, setValue } = useForm();
+    /*const { register, handleSubmit, watch, errors, setValue } = useForm();*/
+    const { register, errors, handleSubmit } = useForm({
+      criteriaMode: "all",
+    });
     const [info, setInfo] = useState("");
     const handleChangue = (event) => {
       setInfo(event.target.value);
@@ -82,12 +161,14 @@ export default function Form() {
     };
 
     const onSubmit = (data) => {
-      if (props.tipo === "name") {
-        setNombre(`${JSON.stringify(data).replace(/['"]+/g, "")}`);
-      } else if (props.tipo === "mail") {
-        setMail(`${JSON.stringify(data).replace(/['"]+/g, "")}`);
-      } else if (props.tipo === "telefono") {
-        setTelefono(`${JSON.stringify(data).replace(/['"]+/g, "")}`);
+      if (props.typeId === "name") {
+        setNombre(`${JSON.stringify(data.name).replace(/['"]+/g, "")}`);
+      } else if (props.typeId === "mail") {
+        setMail(`${JSON.stringify(data.email).replace(/['"]+/g, "")}`);
+      } else if (props.typeId === "phone") {
+        setTelefono(`${JSON.stringify(data.phone).replace(/['"]+/g, "")}`);
+      } else if (props.typeId === "zona") {
+        setZona(`${JSON.stringify(data.text).replace(/['"]+/g, "")}`);
       }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
@@ -102,9 +183,31 @@ export default function Form() {
           name={props.name}
           placeholder={props.placeholder}
           type={props.type}
-          ref={register({ required: true, maxLength: 35 })}
+          ref={register({
+            required: "Este campo no puede estar vacio.",
+
+            maxLength: {
+              value: 35,
+              message: "El nombre es muy largo",
+            },
+          })}
           className={styles.input}
           onChange={handleChangue}
+        />
+
+        <ErrorMessage
+          errors={errors}
+          name={props.name}
+          render={({ messages }) => {
+            console.log("messages", messages);
+            return messages
+              ? Object.entries(messages).map(([type, message]) => (
+                  <p key={type} className={styles.errorMensaje}>
+                    {message}
+                  </p>
+                ))
+              : null;
+          }}
         />
 
         <Button
@@ -135,7 +238,7 @@ export default function Form() {
             name={"name"}
             placeholder={""}
             type={"name"}
-            tipo={"name"}
+            typeId={"name"}
           />
         );
 
@@ -145,7 +248,7 @@ export default function Form() {
             name={"email"}
             placeholder={"ejemplo@mimail.com"}
             type={"email"}
-            tipo={"mail"}
+            typeId={"mail"}
           />
         );
       case 2:
@@ -154,11 +257,18 @@ export default function Form() {
             name={"phone"}
             placeholder={"+57"}
             type={"phone"}
-            tipo={"telefono"}
+            typeId={"phone"}
           />
         );
       case 3:
-        return <InputForm name={"text"} placeholder={""} type={"text"} />;
+        return (
+          <InputForm
+            name={"text"}
+            placeholder={""}
+            type={"text"}
+            typeId={"zona"}
+          />
+        );
       case 4:
         return <SelectForm />;
       case 5:
@@ -197,42 +307,32 @@ export default function Form() {
         continuar con el proceso.
       </h2>
       <div className={classes.root}>
-        <Stepper activeStep={activeStep} orientation="vertical">
+        <Stepper  activeStep={activeStep} orientation="vertical" > 
           {steps.map((label, index) => (
-            <Step key={label}>
-              <StepLabel>{label}</StepLabel>
-              <StepContent>
-                <div>{getStepContent(index)}</div>
-                <div className={classes.actionsContainer}>
-                  <div>
-                    <Button
-                      disabled={activeStep === 0}
-                      onClick={handleBack}
-                      className={classes.button}
-                    >
-                      Atras
-                    </Button>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={handleNext}
-                      className={classes.button}
-                    >
-                      {activeStep === steps.length - 1
-                        ? "Confirmar"
-                        : "Siguiente"}
-                    </Button>
-                  </div>
-                </div>
+            <Step key={label} >
+              <StepLabel classes={{
+            alternativeLabel: classes.alternativeLabel,
+            labelContainer: classes.labelContainer
+          }}
+          StepIconProps={{
+            classes: {
+              root: classes.step,
+              completed: classes.completed,
+              active: classes.active,
+              
+            }
+          }}>{label}</StepLabel>
+              <StepContent >
+                <div >{getStepContent(index)}</div>
               </StepContent>
             </Step>
           ))}
         </Stepper>
         {activeStep === steps.length && (
           <Paper square elevation={0} className={classes.resetContainer}>
-            <Typography>
+            <Typography >
               <b>Has completado todos los pasos</b>, en breve nos comunicaremos
-              contigo, gracias por confiar en <b>glavi</b>, tu inmobiliaria de
+              contigo, gracias por contar con <b>glavi</b>, tu inmobiliaria de
               confianza.
             </Typography>
             <Button onClick={handleReset} className={classes.button}>
@@ -245,3 +345,5 @@ export default function Form() {
     </div>
   );
 }
+
+
