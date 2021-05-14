@@ -4,7 +4,7 @@
   /* background: linear-gradient( to right, #f64f59, #c471ed, #12c2e9 ); */
   background: linear-gradient(to right, #ea98c2d4, #ca8be8d9, #59cae2c9);
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   height: 97px;
 }
 

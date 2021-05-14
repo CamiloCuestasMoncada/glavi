@@ -1,10 +1,10 @@
 import styles from "./Buttonlink.module.css";
-function Buttonmenu(){
+function Buttonmenu(props){
 
     return <>
     
     <button className={styles.button}>
-        Vender
+        {props.nombre}
     </button>
     
     </>

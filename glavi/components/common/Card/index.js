@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -21,6 +22,7 @@ import HotelIcon from "@material-ui/icons/Hotel";
 import styles from "./Card.module.css";
 import Grid from "@material-ui/core/Grid";
 import AspectRatio from "@material-ui/icons/AspectRatio";
+import useInmuebles from "./../../../hooks/useInmuebles";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -57,6 +59,19 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RecipeReviewCard() {
+  useEffect(() => {
+    const getInmuebles = async () => {
+      const resultado = await axios.get("http://localhost:1337/inmuebles");
+      console.log(resultado);
+      setInmuebles(resultado.data);
+    };
+    getInmuebles();
+  }, []);
+
+  const [inmuebles, setInmuebles] = useState([]);
+
+  const { Inmuebles } = useInmuebles(inmuebles);
+
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -65,74 +80,84 @@ export default function RecipeReviewCard() {
   };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader title="Casa con piscina" subheader="CEDRITOS, Bogotá D.C." />
-      <CardMedia
-        className={classes.media}
-        image="/herofondo.svg"
-        title="Paella dish"
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          La casa ideal ddfg dfghdfh fgh fgh fghfdhfdgh fghfgh fhfdhg hg
-          hdfhfdghhf gf hfhsfd
-        </Typography>
-      </CardContent>
-      <CardContent>
-        <Grid container spacing={2}>
-          <Grid item xs className={classes.paper}>
-            <Icon>
-              <AspectRatio />
-              <Typography className={classes.font}>
-                <span>44 m²</span>
+    <div>
+      {inmuebles.map((inmueble) => (
+        <div>
+          <Card className={classes.root}>
+            <Inmuebles />
+            <CardHeader
+              title="Casa con piscina"
+              subheader="CEDRITOS, Bogotá D.C."
+            />
+            <CardMedia
+              className={classes.media}
+              image= {`http://localhost:1337${inmueble.portada.url}`} 
+              title="Paella dish"
+            />
+            <CardContent>
+              <Typography variant="body2" color="textSecondary" component="p">
+                La casa ideal ddfg dfghdfh fgh fgh fghfdhfdgh fghfgh fhfdhg hg
+                hdfhfdghhf gf hfhsfd
               </Typography>
-            </Icon>
-          </Grid>
+            </CardContent>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <AspectRatio />
+                    <Typography className={classes.font}>
+                      <span>44 m²</span>
+                    </Typography>
+                  </Icon>
+                </Grid>
 
-          <Grid item xs className={classes.paper}>
-            <Icon>
-              <HotelIcon />
-              <Typography className={classes.font}>
-                <span>4</span>
-              </Typography>
-            </Icon>
-          </Grid>
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <HotelIcon />
+                    <Typography className={classes.font}>
+                      <span>4</span>
+                    </Typography>
+                  </Icon>
+                </Grid>
 
-          <Grid item xs className={classes.paper}>
-            <Icon>
-              <Bathtub />
-              <Typography className={classes.font}>
-                <span>4</span>
-              </Typography>
-            </Icon>
-          </Grid>
-        </Grid>
-      </CardContent>
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <Bathtub />
+                    <Typography className={classes.font}>
+                      <span>4</span>
+                    </Typography>
+                  </Icon>
+                </Grid>
+              </Grid>
+            </CardContent>
 
-      <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMoreIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Typography paragraph>Method:</Typography>
-          <Typography paragraph>La propiedad bla bla bla</Typography>
-        </CardContent>
-      </Collapse>
-    </Card>
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="share">
+                <ShareIcon />
+              </IconButton>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={expanded} timeout="auto" unmountOnExit>
+              <CardContent>
+                <Typography paragraph>Method:</Typography>
+                <Typography paragraph>La propiedad bla bla bla</Typography>
+              </CardContent>
+            </Collapse>
+          </Card>
+        </div>
+      ))}
+    </div>
   );
 }

@@ -44,13 +44,16 @@ function Header() {
                   />
                 </li>
                 <li>
-                  <Buttonlink/>
+                  <Buttonlink nombre = {"vender"}/>
                 </li>
                 <li>
                   <Buttondropdawn
                     options={[" Avalúos", "Consigna tu inmueble", "Intervenciones arquitectónicas"]}
                     category={"+ Servicios"}
                   />
+                </li>
+                <li>
+                  <Buttonlink nombre = {"blog"}/>
                 </li>
               </ul>
             </div>
