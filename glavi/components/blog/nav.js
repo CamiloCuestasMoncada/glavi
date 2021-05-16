@@ -4,23 +4,23 @@ import Link from "next/link";
 const Nav = ({ categories }) => {
   return (
     <div>
-      <nav className="uk-navbar-container" data-uk-navbar>
-        <div className="uk-navbar-left">
-          <ul className="uk-navbar-nav">
+      <nav className="">
+        <div className="">
+          <ul className="">
             <li>
               <Link href="/">
-                <a>Strapi Blog</a>
+                <a>Regresar</a>
               </Link>
             </li>
           </ul>
         </div>
-        <div className="uk-navbar-right">
-          <ul className="uk-navbar-nav">
+        <div className="">
+          <ul className="">
             {categories.map((category) => {
               return (
                 <li key={category.id}>
                   <Link as={`/category/${category.slug}`} href="/category/[id]">
-                    <a className="uk-link-reset">{category.name}</a>
+                    <a className="">{category.name}</a>
                   </Link>
                 </li>
               );

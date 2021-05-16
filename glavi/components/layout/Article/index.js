@@ -8,6 +8,10 @@ import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import Image from "next/image";
+import Images from "../../../components/blog/images";
+import ReactMarkdown from 'react-markdown'
+/*import { getStrapiMedia2 } from "../../../lib/media";*/
+/*import Images from './../../blog/images';*/
 
 const useStyles = makeStyles({
   root: {
@@ -38,8 +42,9 @@ const useStyles = makeStyles({
     transform: "scale(0.8)",
   },
   title: {
-    fontSize: 31,
+    fontSize: 27,
     fontWeight: 700,
+    lineHeight: 1.1,
   },
   pos: {
     marginBottom: 12,
@@ -49,51 +54,55 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Article() {
-  useEffect(() => {
-    const getEntradasBlog = async () => {
-      const resultado = await axios.get(`http://localhost:1337/blogs`);
-      const pruebaImagen = await axios.get(`http://localhost:1337/articles`);
-     
-      console.log(resultado.data);
-      setEntradasBlog(resultado.data);
-      setPruebas(pruebaImagen.data);
-      console.log(pruebaImagen.data);
-      console.log(pruebaImagen);
-    };
-    getEntradasBlog();
-  }, []);
-
-  const [entradasBlog, setEntradasBlog] = useState([]);
-  const [pruebas, setPruebas] = useState([]);
-
-  function Section1(props) {
+export default function ArticleLayout({
+  image,
+  image1,
+  image2,
+  content,
+  content2,
+  portada,
+  title,
+  description,
+}) {
+  /*const imageUrl2 = getStrapiMedia2(props.article);*/
+  function Section1({ image1, content }) {
     return (
       <div id={styles.section1Container}>
         <div id={styles.imagenesBlog}>
-          <img src={props.imagen} alt="" />
+          <Images
+            image={image1}
+            style={{
+              height: 370,
+            }}
+          />
         </div>
         <div>
-          <p>{props.texto}</p>
+        <ReactMarkdown children={content}/>
+          
         </div>
       </div>
     );
   }
 
-  function Section2(props) {
+  function Section2({ image2, content2 }) {
     return (
       <div id={styles.section2Container}>
         <div>
-          <p>{props.texto2}</p>
+          <p>{content2}</p>
         </div>
         <div id={styles.imagenesBlog}>
-          <img src={props.imagen2} alt="" />
+          <Images
+            image={image2}
+            style={{
+              height: 370,
+            }}
+          />
         </div>
       </div>
     );
   }
 
-  function TarjetaTexto(props) {
+  function TarjetaTexto({ image, content, content2 }) {
     const classes = useStyles();
     const bull = <span className={classes.bullet}>•</span>;
 
@@ -101,8 +110,8 @@ export default function Article() {
       <Card className={classes.rootContenido}>
         <CardContent>
           <div id={styles.sectionsContainer}>
-            <Section1 imagen={props.imagen} texto={props.texto} />
-            <Section2 imagen2={props.imagen2} texto2={props.texto2}/>
+            <Section1 image1={image1} content={content} />
+            <Section2 image2={image2} content2={content2} />
           </div>
         </CardContent>
       </Card>
@@ -121,19 +130,11 @@ export default function Article() {
             color="textSecondary"
             gutterBottom
           >
-            Como mudarte
+            <h1>{title}</h1>
+            
           </Typography>
           <Typography variant="h5" component="h2">
-            Las mejores recomendaciones
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            Tips
-          </Typography>
-          <Typography variant="body2" component="p" className={classes.texto}>
-            mudarse........................ ......................
-            ...................
-            <br />
-            {`Lorem Ipsum es simplemente el texto de relle" por Cicero son también reproducidas en su forma original exacta, acompañadas por versiones en Inglés de la traducción realizada en 1914 por H. Rackham.`}
+            {description}
           </Typography>
         </CardContent>
       </Card>
@@ -142,38 +143,24 @@ export default function Article() {
 
   return (
     <div id={styles.blogContainer}>
-      {entradasBlog.map((entrada) => (
-        <div>
-          <div id={styles.contenido}>
-            <div id={styles.containerPortada}>
-              <img src="mudar.jfif" alt="" id={styles.portada} />
-            </div>
-
-            <div id={styles.tarjeta1}>
-              <Tarjeta />
-            </div>
-          </div>
-          <div id={styles.bodyContent}>
-            <TarjetaTexto
-              imagen={`http://localhost:1337${entrada.imagenSeccion1[0].url}`}
-              
-              texto = {entrada.textoSeccion1}
-              texto2 = {entrada.textoSeccion2}
+      <div>
+        <div id={styles.contenido}>
+          <div id={styles.containerPortada}>
+            <Images
+              image={portada}
+              style={{
+                height: "30vw",
+              }}
             />
+          </div>
+
+          <div id={styles.tarjeta1}>
+            <Tarjeta />
           </div>
         </div>
-      ))}
-      <div>
-      {pruebas.map((tt) => (
-      
-      <TarjetaTexto
-              imagen={`http://localhost:1337${tt.image.url}`}
-              
-              
-            />
-      
-      ))}
-
+        <div id={styles.bodyContent}>
+          <TarjetaTexto image={portada} content={content} content2={content2} />
+        </div>
       </div>
     </div>
   );
