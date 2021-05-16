@@ -2,7 +2,7 @@ import Header from "../components/layout/Header/index";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import useInmuebles from './../hooks/useInmuebles';
-import Card from "../components/common/Card/index";
+import RecipeReviewCard from "../components/common/Card/index";
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -16,10 +16,12 @@ import EventAvailableIcon from "@material-ui/icons/EventAvailable";
 import { Icon } from "@material-ui/core";
 import GradeIcon from "@material-ui/icons/Grade";
 import Footer from "../components/layout/Footer/index";
+import useFiltro from "../hooks/useFiltro"
+
 
 
 const {Inmuebles} = useInmuebles();
-
+const {FiltroUi} = useFiltro();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -78,29 +80,15 @@ export default function Home() {
           </Icon>
         </div>
 
-        <Grid container spacing={5}>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-        </Grid>
-        <Grid container spacing={5}>
-          <Grid item xs>
-            <Card>xs</Card>
-          </Grid>
-    
-        </Grid>
+        
+        <div className={styles.container_cardsInmuebles}>
+        <RecipeReviewCard/>
+        </div>
+          
+            
+          
+    <FiltroUi/>
+        
       </section>
       <footer>
         <Footer />
