@@ -1,4 +1,15 @@
-.iconsText{
-    display: inline-table;
-    margin-top: -7px;
+.iconsText {
+  display: inline-table;
+  margin-top: -7px;
+}
+
+.container_cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.individualCard {
+  width: 20vw;
+  margin-top: 30px;
 }
