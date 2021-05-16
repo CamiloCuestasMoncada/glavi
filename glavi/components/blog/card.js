@@ -1,25 +1,28 @@
 import React from "react";
 import Link from "next/link";
-import Image from "./image";
+import Images from "./images";
+import styles from "./blogComponents.module.css";
 
 const Card = ({ article }) => {
   return (
     <Link as={`/article/${article.slug}`} href="/article/[id]">
-      <a className="uk-link-reset">
-        <div className="uk-card uk-card-muted">
-          <div className="uk-card-media-top">
-            <Image image={article.image} />
+      <div className={styles.container_list_card}>
+        <a className={styles.linkToArticles}>
+          <div className={styles.imageContainer}>
+            <div className={styles.image}>
+              <Images image={article.image} />
+            </div>
+            <div className={styles.conatiner_title_article}>
+              <p id="category" className="">
+                {article.category.name}
+              </p>
+              <p id="title" className="">
+                {article.title}
+              </p>
+            </div>
           </div>
-          <div className="uk-card-body">
-            <p id="category" className="uk-text-uppercase">
-              {article.category.name}
-            </p>
-            <p id="title" className="uk-text-large">
-              {article.title}
-            </p>
-          </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </Link>
   );
 };
