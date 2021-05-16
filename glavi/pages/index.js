@@ -20,8 +20,7 @@ import useFiltro from "../hooks/useFiltro"
 
 
 
-const {Inmuebles} = useInmuebles();
-const {FiltroUi} = useFiltro();
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,6 +34,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
+  const {Inmuebles} = useInmuebles();
+const {FiltroUi} = useFiltro();
   const classes = useStyles();
   return (
     <>
