@@ -60,9 +60,9 @@ const {FiltroUi} = useFiltro();
 
       <section className={styles.recommendations}>
         <h2 className={styles.titleRecommendations}>
-          Nuestra prioridad es tu bienestar
+          Te acompañamos en el proceso de encontrar tu lugar ideal.
         </h2>
-        <Inmuebles />
+        
         <div className={styles.recommendationsContainer}>
           <Recommendations />
           <Recommendations />

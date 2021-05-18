@@ -4,12 +4,13 @@ import PropTypes from "prop-types";
 import Head from "next/head";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import '../styles/globals.css';
+import "../styles/globals.css";
 import theme from "./theme/index";
 import { AnimateSharedLayout } from "framer-motion";
 import { createContext } from "react";
 import { getStrapiMedia } from "../lib/media";
 import { fetchAPI } from "../lib/api";
+import { GlobalContextApp } from "../context/GlobalContextApp";
 
 // Store Strapi Global object in context
 export const GlobalContext = createContext({});
@@ -39,7 +40,10 @@ export default function MyApp(props) {
           href="https://fonts.googleapis.com/css2?family=Inter:wght@800&family=Vollkorn:wght@800&display=swap"
           rel="stylesheet"
         />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap" rel="stylesheet"/>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap"
+          rel="stylesheet"
+        />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/js/uikit.min.js" />
         <script src="https://cdn.jsdelivr.net/npm/uikit@3.2.3/dist/js/uikit-icons.min.js" />
         <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.2.0/js/uikit.js" />
@@ -48,12 +52,12 @@ export default function MyApp(props) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <AnimateSharedLayout>
-        <GlobalContext.Provider value={global}>
-        <Component {...pageProps} />
-        </GlobalContext.Provider>
-
+          <GlobalContext.Provider value={global}>
+            <GlobalContextApp>
+              <Component {...pageProps} />
+            </GlobalContextApp>
+          </GlobalContext.Provider>
         </AnimateSharedLayout>
-        
       </ThemeProvider>
     </React.Fragment>
   );

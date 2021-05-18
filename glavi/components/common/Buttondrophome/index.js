@@ -1,26 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import styles from "./Buttondrophome.module.css";
+
 
 
 export default function Buttondrophome(props) {
   
 
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
+  const [selectedOption, setSelectedOption] = useState();
+  
   const toggling = () => setIsOpen(!isOpen);
 
   const onOptionClicked = (value) => () => {
     setSelectedOption(value);
     setIsOpen(false);
-    console.log(selectedOption);
+    
   };
 
   const handleClickAway = () => {
     setIsOpen(false);
   };
 
+
+  
   return (
     <>
       <ClickAwayListener onClickAway={handleClickAway}>
@@ -38,6 +41,7 @@ export default function Buttondrophome(props) {
                     key={Math.random()}
                   >
                     {option}
+                    
                   </li>
                 ))}
               </ul>
