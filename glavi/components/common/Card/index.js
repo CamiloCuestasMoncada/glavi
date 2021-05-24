@@ -57,12 +57,50 @@ const useStyles = makeStyles((theme) => ({
   font: {
     fontSize: 17,
   },
+
+  description: {
+    height: 142,
+    overflow: "hidden",
+  },
+
+  titulo: {
+    
+    fontFamily:"Inter, sans-serif",
+    fontWeight:700,
+    paddingLeft: 17,
+    paddingRight: 17,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 20,
+    color: "#7d7d7d",
+    
+    
+
+  },
+
+  subtitulo: {
+    
+    fontFamily:"Inter, sans-serif",
+    fontWeight:400,
+    paddingLeft: 17,
+    paddingRight: 17,
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 22,
+    color: "#ffffff",
+    backgroundColor: "#7fd4e9",
+
+    
+    
+
+  },
+
 }));
 
 export default function RecipeReviewCard() {
   useEffect(() => {
     const getInmuebles = async () => {
-      const resultado = await axios.get("http://localhost:1337/inmuebles");
+      const resultado = await axios.get("http://192.34.57.251/inmuebles");
       console.log(resultado);
       setInmuebles(resultado.data);
     };
@@ -80,79 +118,101 @@ export default function RecipeReviewCard() {
     setExpanded(!expanded);
   };
 
+  const PrecioTarjeta = (props) => {
+    if (props.arriendo && props.venta) {
+      return `Arriendo: ${props.arriendo} Venta: ${props.venta}`;
+    }
+
+    if (props.arriendo) {
+      return `Arriendo: ${props.arriendo}`;
+    }
+    if (props.venta) {
+      return `Venta: ${props.venta}`;
+    }
+  };
+
   return (
     <div className={styles.container_cards}>
       {inmuebles.map((inmueble) => (
         <div className={styles.individualCard} key={inmueble.id}>
-          
-            <Card className={classes.root}>
-              
-              <CardHeader
-                title={inmueble.titulo}
-                subheader={`${inmueble.barrio}, ${inmueble.ciudad}`}
+          <Card className={classes.root}>
+            <div className={classes.titulo}>
+              {
+                inmueble.titulo
+              }
+            </div>
+            <div className={classes.subtitulo}>
+              {
+                <PrecioTarjeta
+                arriendo={inmueble.arriendoPrecio}
+                venta={inmueble.ventaPrecio}
               />
-              <CardMedia
-                className={classes.media}
-                image={`http://localhost:1337${inmueble.portada.url}`}
-                title="Paella dish"
-              />
-              <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {inmueble.descripcion}
-                </Typography>
-              </CardContent>
-              <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs className={classes.paper}>
-                    <Icon>
-                      <AspectRatio />
-                      <Typography className={classes.font}>
-                        <span>{`${inmueble.areaConstruida}m²`}</span>
-                      </Typography>
-                    </Icon>
-                  </Grid>
-
-                  <Grid item xs className={classes.paper}>
-                    <Icon>
-                      <HotelIcon />
-                      <Typography className={classes.font}>
-                        <span>{inmueble.habitaciones}</span>
-                      </Typography>
-                    </Icon>
-                  </Grid>
-
-                  <Grid item xs className={classes.paper}>
-                    <Icon>
-                      <Bathtub />
-                      <Typography className={classes.font}>
-                        <span>{inmueble.bathroom}</span>
-                      </Typography>
-                    </Icon>
-                  </Grid>
+              }
+            </div>
+            
+            <CardMedia
+              className={classes.media}
+              image={`http://192.34.57.251${inmueble.portada.url}`}
+              title="Glavi Propiedades"
+            />
+            <CardContent>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                component="p"
+                className={classes.description}
+              >
+                {inmueble.descripcion}
+              </Typography>
+            </CardContent>
+            <CardContent>
+              <Grid container spacing={2}>
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <AspectRatio />
+                    <Typography className={classes.font}>
+                      <span>{`${inmueble.areaConstruida}m²`}</span>
+                    </Typography>
+                  </Icon>
                 </Grid>
-              </CardContent>
 
-              <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                  <FavoriteIcon />
-                </IconButton>
-                <IconButton aria-label="share">
-                  <ShareIcon />
-                </IconButton>
-                <IconButton
-                  className={clsx(classes.expand, {
-                    [classes.expandOpen]: expanded,
-                  })}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="show more"
-                >
-                  
-                </IconButton>
-              </CardActions>
-              
-            </Card>
-          
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <HotelIcon />
+                    <Typography className={classes.font}>
+                      <span>{inmueble.habitaciones}</span>
+                    </Typography>
+                  </Icon>
+                </Grid>
+
+                <Grid item xs className={classes.paper}>
+                  <Icon>
+                    <Bathtub />
+                    <Typography className={classes.font}>
+                      <span>{inmueble.bathroom}</span>
+                    </Typography>
+                  </Icon>
+                </Grid>
+              </Grid>
+            </CardContent>
+
+            <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+                <FavoriteIcon />
+              </IconButton>
+              <IconButton aria-label="share">
+                <ShareIcon />
+              </IconButton>
+              <IconButton
+                className={clsx(classes.expand, {
+                  [classes.expandOpen]: expanded,
+                })}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="show more"
+              ></IconButton>
+            </CardActions>
+          </Card>
         </div>
       ))}
     </div>

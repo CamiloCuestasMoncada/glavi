@@ -16,19 +16,19 @@ import Link from "next/link";
 const Menuhome = () => {
   useEffect(() => {
     const getZonas = async () => {
-      const result = await axios.get("http://localhost:1337/zonas");
+      const result = await axios.get("http://192.34.57.251/zonas");
       setZonas(result.data);
     };
     getZonas();
 
     const getTipoPropiedad = async () => {
-      const result = await axios.get("http://localhost:1337/tipodepropiedads");
+      const result = await axios.get("http://192.34.57.251/tipo-De-Propiedades");
       setTipoDePropiedad(result.data);
     };
     getTipoPropiedad();
 
     const getInmuebles = async () => {
-      const resultado = await axios.get("http://localhost:1337/inmuebles");
+      const resultado = await axios.get("http://192.34.57.251/inmuebles");
       console.log(resultado);
       setInmuebles(resultado.data);
     };
@@ -157,7 +157,7 @@ const {setFilterResultZona} = useContext(ThemeContext);
     (inmueble) => inmueble.zona.zona == selectedOptionZona
   );
   const filterType = inmuebles.filter(
-    (inmuebleType) => inmuebleType.tipodepropiedad.tipo == selectedOptionType
+    (inmuebleType) => inmuebleType.tipoDePropiedad.tipo == selectedOptionType
   );
 
   const mostrarResultadoType = filterType.map((result) => result.portada.url);
@@ -180,7 +180,8 @@ const {setFilterResultZona} = useContext(ThemeContext);
     setMostrarResultado(
       `Tu ${mostrarResultadoType} en ${mostrarResultadoZona}`
     );
-    setFilterResultType(mostrarResultadoType)
+    setFilterResultType(mostrarResultadoType);
+    setFilterResultZona(mostrarResultadoZona);
     
   };
   //------------------------------------------------------------------------------------------------------------------

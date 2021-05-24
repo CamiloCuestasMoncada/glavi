@@ -6,14 +6,14 @@ export default function useFiltro() {
   const [zonas, setZonas] = useState([]);
   useEffect(() => {
     const getCategories = async () => {
-      const result = await axios.get("http://localhost:1337/categorias");
+      const result = await axios.get("http://192.34.57.251/categories");
       setCategories(result.data);
       
     }
     getCategories();
 
     const getZonas = async () => {
-      const result = await axios.get("http://localhost:1337/zonas");
+      const result = await axios.get("http://192.34.57.251/zonas");
       setZonas(result.data);
       
     }

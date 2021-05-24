@@ -20,7 +20,16 @@ const PropertyList = ({ inmuebles }) => {
       <section>
         {filterResultType.map((result) => (
           <div>
-            <img src={`http://localhost:1337${result}`} alt="" />
+            <img src={`http://192.34.57.251${result}`} alt="" />
+            <h2>{result}</h2>
+            {console.log(result)}
+          </div>
+        ))}
+      </section>
+      <section>
+        {filterResultZona.map((result) => (
+          <div>
+            <img src={`http://192.34.57.251${result}`} alt="" />
             <h2>{result}</h2>
             {console.log(result)}
           </div>
@@ -32,7 +41,7 @@ const PropertyList = ({ inmuebles }) => {
 };
 
 export async function getStaticPaths() {
-  const inmuebles = await fetchAPI("/tipodepropiedads");
+  const inmuebles = await fetchAPI("/tipo-De-Propiedades");
 
   return {
     paths: inmuebles.map((inmueble) => ({
@@ -45,7 +54,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const inmuebles = await fetchAPI(`/tipodepropiedads?tipo=${params.slug}`);
+  const inmuebles = await fetchAPI(`/tipo-De-Propiedades?tipo=${params.slug}`);
 
   return {
     props: { inmuebles },
