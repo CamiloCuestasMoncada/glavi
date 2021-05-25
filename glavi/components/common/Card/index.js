@@ -23,6 +23,8 @@ import styles from "./Card.module.css";
 import Grid from "@material-ui/core/Grid";
 import AspectRatio from "@material-ui/icons/AspectRatio";
 import useInmuebles from "./../../../hooks/useInmuebles";
+//import ReactImageProcess from "react-image-process";
+//import watermarkImage from "./../../../public/logowatermark.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,25 +65,25 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
 
+  descriptionCorta: {
+    height: 111,
+    overflow: "hidden",
+  },
+
   titulo: {
-    
-    fontFamily:"Inter, sans-serif",
-    fontWeight:700,
+    fontFamily: "Inter, sans-serif",
+    fontWeight: 700,
     paddingLeft: 17,
     paddingRight: 17,
     paddingTop: 10,
     paddingBottom: 10,
     fontSize: 20,
     color: "#7d7d7d",
-    
-    
-
   },
 
   subtitulo: {
-    
-    fontFamily:"Inter, sans-serif",
-    fontWeight:400,
+    fontFamily: "Inter, sans-serif",
+    fontWeight: 400,
     paddingLeft: 17,
     paddingRight: 17,
     paddingTop: 10,
@@ -89,12 +91,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 22,
     color: "#ffffff",
     backgroundColor: "#7fd4e9",
-
-    
-    
-
   },
-
 }));
 
 export default function RecipeReviewCard() {
@@ -131,39 +128,59 @@ export default function RecipeReviewCard() {
     }
   };
 
+  const Descripcion = (props) => {
+    if (props.arriendo && props.venta) {
+      return (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          className={classes.descriptionCorta}
+        >
+          {props.descripcion}
+        </Typography>
+      );
+    } else {
+      return (
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          component="p"
+          className={classes.description}
+        >
+          {props.descripcion}
+        </Typography>
+      );
+    }
+  };
+
   return (
     <div className={styles.container_cards}>
       {inmuebles.map((inmueble) => (
         <div className={styles.individualCard} key={inmueble.id}>
           <Card className={classes.root}>
-            <div className={classes.titulo}>
-              {
-                inmueble.titulo
-              }
-            </div>
+            <div className={classes.titulo}>{inmueble.titulo}</div>
             <div className={classes.subtitulo}>
               {
                 <PrecioTarjeta
+                  arriendo={inmueble.arriendoPrecio}
+                  venta={inmueble.ventaPrecio}
+                />
+              }
+            </div>
+          
+              <CardMedia
+                className={classes.media}
+                image={`http://192.34.57.251${inmueble.portada.url}`}
+                title="Glavi Propiedades"
+              />
+            
+            <CardContent>
+              <Descripcion
+                descripcion={inmueble.descripcion}
                 arriendo={inmueble.arriendoPrecio}
                 venta={inmueble.ventaPrecio}
               />
-              }
-            </div>
-            
-            <CardMedia
-              className={classes.media}
-              image={`http://192.34.57.251${inmueble.portada.url}`}
-              title="Glavi Propiedades"
-            />
-            <CardContent>
-              <Typography
-                variant="body2"
-                color="textSecondary"
-                component="p"
-                className={classes.description}
-              >
-                {inmueble.descripcion}
-              </Typography>
             </CardContent>
             <CardContent>
               <Grid container spacing={2}>
@@ -212,6 +229,7 @@ export default function RecipeReviewCard() {
                 aria-label="show more"
               ></IconButton>
             </CardActions>
+            
           </Card>
         </div>
       ))}

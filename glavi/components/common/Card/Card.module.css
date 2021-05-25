@@ -10,6 +10,13 @@
 }
 
 .individualCard {
-  width: 20vw;
+  
   margin-top: 30px;
+}
+
+@media(min-width:1700px){
+  .individualCard {
+  width: 20vw;
+    margin-top: 30px;
+  }
 }
