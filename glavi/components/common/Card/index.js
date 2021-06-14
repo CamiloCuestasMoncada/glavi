@@ -22,7 +22,7 @@ import HotelIcon from "@material-ui/icons/Hotel";
 import styles from "./Card.module.css";
 import Grid from "@material-ui/core/Grid";
 import AspectRatio from "@material-ui/icons/AspectRatio";
-import useInmuebles from "./../../../hooks/useInmuebles";
+
 //import ReactImageProcess from "react-image-process";
 //import watermarkImage from "./../../../public/logowatermark.png";
 
@@ -94,19 +94,10 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecipeReviewCard() {
-  useEffect(() => {
-    const getInmuebles = async () => {
-      const resultado = await axios.get("http://192.34.57.251/inmuebles");
-      console.log(resultado);
-      setInmuebles(resultado.data);
-    };
-    getInmuebles();
-  }, []);
+export default function RecipeReviewCard({inmuebles}) {
+  
 
-  const [inmuebles, setInmuebles] = useState([]);
-
-  const { Inmuebles } = useInmuebles(inmuebles);
+ 
 
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
@@ -169,11 +160,11 @@ export default function RecipeReviewCard() {
               }
             </div>
           
-              <CardMedia
+              {<CardMedia
                 className={classes.media}
                 image={`http://192.34.57.251${inmueble.portada.url}`}
                 title="Glavi Propiedades"
-              />
+              />}
             
             <CardContent>
               <Descripcion

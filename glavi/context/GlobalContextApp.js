@@ -31,6 +31,8 @@ export function GlobalContextApp({ children }) {
   const [filterResultType, setFilterResultType] = useState([]);
   const [filterResultZona, setFilterResultZona] = useState([]);
   const [filterResult, setFilterResult] = useState();
+  const [filterOperationType, setFilterOperationType] = useState();
+  const [globalFilterResult, setGlobalFilterResult] = useState();
   
   
 
@@ -42,6 +44,10 @@ export function GlobalContextApp({ children }) {
       setFilterResultZona,
       filterResult,
       setFilterResult,
+      filterOperationType,
+      setFilterOperationType,
+      globalFilterResult,
+      setGlobalFilterResult,
     }}>{children}</ThemeContext.Provider>
   );
 }

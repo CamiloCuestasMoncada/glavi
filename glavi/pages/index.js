@@ -3,7 +3,7 @@ import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import useInmuebles from './../hooks/useInmuebles';
 import RecipeReviewCard from "../components/common/Card/index";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -34,7 +34,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Home() {
-  const {Inmuebles} = useInmuebles();
+ 
+  const [inmuebles, setInmuebles] = useState([]);
+
+  useEffect(() => {
+    const getInmuebles = async () => {
+      
+
+      const resultado = await axios.get(`http://192.34.57.251/inmuebles?_limit=-1`);
+      setInmuebles(resultado.data);
+      console.log(resultado);
+    };
+    getInmuebles();
+  }, []);
+
+  
+  const filtraDestacados = (inmuebles) =>{
+  
+    const destacados = inmuebles.filter(inmueble => inmueble.destacado===true)
+    return destacados;
+    
+  }
 const {FiltroUi} = useFiltro();
   const classes = useStyles();
   return (
@@ -83,9 +103,9 @@ const {FiltroUi} = useFiltro();
 
         
         <div className={styles.container_cardsInmuebles}>
-        <RecipeReviewCard/>
+        <RecipeReviewCard inmuebles = {filtraDestacados(inmuebles)}/>
         </div>
-          
+         
             
           
     <FiltroUi/>

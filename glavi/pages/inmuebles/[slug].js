@@ -9,16 +9,23 @@ import { ThemeContext } from "./../../context/GlobalContextApp";
 const PropertyList = ({ inmuebles }) => {
   const { filterResultType } = useContext(ThemeContext);
   const { filterResultZona } = useContext(ThemeContext);
+  const { globalFilterResult } = useContext(ThemeContext);
 
   return (
     <>
       <Header />
-      <h1>{`tipo de propiedad: ${inmuebles[0].tipo} nombre: ${filterResultType} y queda en ${filterResultZona}`}</h1>
+      <h1>{`${globalFilterResult}`}</h1>
 
       {console.log(inmuebles)}
 
       <section>
-        {filterResultType.map((result) => (
+        {globalFilterResult ? globalFilterResult.map((result) => (
+          <div>
+            <img src={`http://192.34.57.251${result}`} alt="" />
+            <h2>{result}</h2>
+            {console.log(result)}
+          </div>
+        )) : filterResultType.map((result) => (
           <div>
             <img src={`http://192.34.57.251${result}`} alt="" />
             <h2>{result}</h2>
@@ -27,13 +34,13 @@ const PropertyList = ({ inmuebles }) => {
         ))}
       </section>
       <section>
-        {filterResultZona.map((result) => (
+        {/*filterResultZona.map((result) => (
           <div>
             <img src={`http://192.34.57.251${result}`} alt="" />
             <h2>{result}</h2>
             {console.log(result)}
           </div>
-        ))}
+        ))*/}
       </section>
       <Footer />
     </>
