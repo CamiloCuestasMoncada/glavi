@@ -3,6 +3,9 @@ import React, { useState } from "react";
 
 function Buttonmenu(props) {
   const [clickColor, setClickColor] = useState(true);
+
+  //hooks globales
+  
   
     let styleButtonColor;
   function ChangueColorButton() {
