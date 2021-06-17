@@ -6,7 +6,7 @@ import GetFiterResult from "../../hooks/getFilterResult";
 
 import { ThemeContext } from "./../../context/GlobalContextApp";
 
-const PropertyList = ({ inmuebles }) => {
+const PropertyList = () => {
   const { filterResultType } = useContext(ThemeContext);
   const { filterResultZona } = useContext(ThemeContext);
   const { globalFilterResult } = useContext(ThemeContext);
@@ -14,34 +14,26 @@ const PropertyList = ({ inmuebles }) => {
   return (
     <>
       <Header />
-      <h1>{`${globalFilterResult}`}</h1>
+      <h1>{/*`kkkk${ JSON.stringify(globalFilterResult) }`*/}</h1>
 
-      {console.log(inmuebles)}
+      
 
       <section>
         {globalFilterResult ? globalFilterResult.map((result) => (
           <div>
-            <img src={`http://192.34.57.251${result}`} alt="" />
-            <h2>{result}</h2>
-            {console.log(result)}
+            <img src={`http://192.34.57.251${result.portada.url}`} alt="" />
+            <h2>{`glloobal${result.titulo}`}</h2>
+            
           </div>
         )) : filterResultType.map((result) => (
           <div>
-            <img src={`http://192.34.57.251${result}`} alt="" />
-            <h2>{result}</h2>
-            {console.log(result)}
+            <img src={result.portada.url} alt="" />
+            <h2>{result.titulo}</h2>
+            
           </div>
         ))}
       </section>
-      <section>
-        {/*filterResultZona.map((result) => (
-          <div>
-            <img src={`http://192.34.57.251${result}`} alt="" />
-            <h2>{result}</h2>
-            {console.log(result)}
-          </div>
-        ))*/}
-      </section>
+     
       <Footer />
     </>
   );

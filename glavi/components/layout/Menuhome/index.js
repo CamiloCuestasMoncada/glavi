@@ -11,41 +11,64 @@ import Link from "next/link";
 const Menuhome = () => {
   useEffect(() => {
     const getZonas = async () => {
-      const result = await axios.get("http://192.34.57.251/zonas");
-      setZonas(result.data);
+      const resultZonas = await axios.get(
+        "http://192.34.57.251/zonas?_limit=-1"
+      );
+      const resultZonasEspecificas = await axios.get(
+        "http://192.34.57.251/specificzones?_limit=-1"
+      );
+      setZonas(resultZonas.data);
+      const zonas = resultZonas.data;
+      const zonasEspecificas = resultZonasEspecificas.data;
+      setZonasEspecificas(resultZonasEspecificas.data);
+      const zonasTotales = zonas.concat(zonasEspecificas);
+      setTotalZonas(zonasTotales);
+      console.log(zonasTotales);
     };
     getZonas();
 
     const getTipoPropiedad = async () => {
       const result = await axios.get(
-        "http://192.34.57.251/tipo-De-Propiedades"
+        "http://192.34.57.251/tipo-De-Propiedades?_limit=-1"
       );
       setTipoDePropiedad(result.data);
     };
     getTipoPropiedad();
 
     const getInmuebles = async () => {
-      for(let i = 0; i<100; i++){
+      const resultado = await axios.get(
+        `http://192.34.57.251/inmuebles?_limit=-1`
+      );
 
-      }
-      const resultado = await axios.get(`http://192.34.57.251/inmuebles`);
-      console.log(resultado);
-      setInmuebles(resultado.data);
+      setInmuebles(resultado);
+      let ps = resultado.data;
+      let newe = Array.from(ps);
+      console.log(resultado.data);
+      console.log(newe);
     };
     getInmuebles();
   }, []);
 
-  //hooks   ------------------------------------------------------------------
+  //hooks botones  ------------------------------------------------------------------
   const [selectedOptionZona, setSelectedOptionZona] = useState();
   const [selectedOptionType, setSelectedOptiontype] = useState();
   const [mostrarResultado, setMostrarResultado] = useState(
     "Aun no hay nada para mostrar"
   );
-  const [searchTerm, setSearchTerm] = useState("");
 
+  //hooks botones activos
+  const [activeButton, setActiveButton] = useState(false);
+  const [activeButton2, setActiveButton2] = useState(false);
+  const [activeButton3, setActiveButton3] = useState(false);
   const [valueDropdownSeacrh, setValueDropdownSeacrh] = useState(null);
 
-  //estados globales
+  //hooks filtros
+  const [zonas, setZonas] = useState([]);
+  const [zonasEspecificas, setZonasEspecificas] = useState([]);
+  const [totalZonas, setTotalZonas] = useState([]);
+  const [tipoDePropiedad, setTipoDePropiedad] = useState([]);
+  const [inmuebles, setInmuebles] = useState([]);
+  //estados globales filtros
   const { filterResultType } = useContext(ThemeContext);
   const { setFilterResultType } = useContext(ThemeContext);
   const { filterResultZona } = useContext(ThemeContext);
@@ -127,7 +150,7 @@ const Menuhome = () => {
                     <li
                       className={styles.listItem}
                       onClick={onOptionClicked(option)}
-                      key={Math.random()}
+                      key={option}
                     >
                       {option}
                     </li>
@@ -235,7 +258,7 @@ const Menuhome = () => {
                     <li
                       className={styles.listItem}
                       onClick={onOptionClicked(option)}
-                      key={Math.random()}
+                      key={option}
                     >
                       {option}
                     </li>
@@ -248,47 +271,7 @@ const Menuhome = () => {
       </>
     );
   }
-  //-----------------------------------------------------------------------------------------------------------------
 
-  //component result filter
-
-  const ResultFilterToClickBuscar = () => {
-    return <p>{mostrarResultadoGeneral}</p>;
-  };
-  //---------------------------------------------------------------------------------------------------------------------
-  const [zonas, setZonas] = useState([]);
-  const [tipoDePropiedad, setTipoDePropiedad] = useState([]);
-  const [inmuebles, setInmuebles] = useState([]);
-  const { FiltroUi } = useFiltro();
-  const [activeButton, setActiveButton] = useState(false);
-  const [activeButton2, setActiveButton2] = useState(false);
-  const [activeButton3, setActiveButton3] = useState(false);
-
-  function filterResultSearch() {
-    if (selectedOptionZona && selectedOptionType) {
-      setGlobalFilterResult(mostrarResultadoGeneral);
-    }else{setGlobalFilterResult(null)}
-  }
-
-  //const globalFilter = inmuebles.filter(filterResultSearch);----------------------------------------------------------------------------------------------
- 
-  const filterZona = inmuebles.filter(
-    (inmueble) => inmueble.zona.zona == selectedOptionZona
-  );
-  const filterType = inmuebles.filter(
-    (inmuebleType) => inmuebleType.tipoDePropiedad.tipo == selectedOptionType
-  );
-
-  const filterOk = filterZona.filter(
-    (inmuebleType) => inmuebleType.tipoDePropiedad.tipo == selectedOptionType
-  );
-console.log(`lilolilo${filterOk}`);
-  const mostrarResultadoGeneral = filterOk.map((result) => result.portada.url);
-  const mostrarResultadoType = filterType.map((result) => result.portada.url);
-
-  const mostrarResultadoZona = filterZona.map((result) => result.portada.url);
-  const result = mostrarResultadoType;
-  //---------------------------------------------------------------------------------------------------------
   const handleClickButton1 = () => {
     setActiveButton(true);
     setActiveButton2(false);
@@ -300,21 +283,59 @@ console.log(`lilolilo${filterOk}`);
     setActiveButton3(false);
   };
   const handleClickBuscar = () => {
-    setMostrarResultado(
-      `Tu ${mostrarResultadoType} en ${mostrarResultadoZona}`
-    );
-    setFilterResultType(mostrarResultadoType);
-    setFilterResultZona(mostrarResultadoZona);
-    filterResultSearch();
+    if (selectedOptionZona && selectedOptionType) {
+      globalFilterResults();
+    } else if (selectedOptionZona) {
+      zonaFilterResults(selectedOptionZona);
+    } else if (selectedOptionType) {
+      typeFilterResults(selectedOptionType);
+    }
   };
   //------------------------------------------------------------------------------------------------------------------
+
+  //funciones encargadas de realizar los filtros
+  const globalFilterResults = () => {
+ 
+    let todosLosInmuebles = inmuebles.data;
+
+   /* function filtro(prop) {
+      let resultado = selectedOptionType[0];
+      let preFiltro;
+      const specificZona = prop?.specificzone?.zona || null;
+      if (prop.zona.zona === selectedOptionZona) {
+        preFiltro = prop.zona.zona;
+      } else if (specificZona === selectedOptionZona) {
+        preFiltro = specificZona;
+      }
+
+      inmueble.tipoDePropiedad.tipo === resultado;
+      setGlobalFilterResult(resultadoGlobal);
+    }
+    const resultadoGlobal = todosLosInmuebles.filter(filtro);*/
+    let resultado = selectedOptionType[0];
+    function filtro(prop){
+      debugger;
+        const specificZona = prop?.specificzone?.zona || null;
+        if(prop.tipoDePropiedad.tipo === resultado){
+          if(prop.zona.zona===selectedOptionZona || specificZona===selectedOptionZona){
+            return true;
+            
+          }
+        }
+      
+    }
+    const resultadoGlobal = todosLosInmuebles.filter(filtro);
+    setGlobalFilterResult(resultadoGlobal);
+  };
+
+  const zonaFilterResults = () => {};
+
+  const typeFilterResults = () => {};
+
   return (
     <section className={styles.Menuhome}>
       <div className={styles.titleContainer}>
         <h1 className={styles.title}>¡Encuentra tu lugar ideal!</h1>
-
-        {console.log(filterZona)}
-        {console.log(filterType)}
       </div>
 
       <div className={styles.menuHomeContainer}>
@@ -337,7 +358,7 @@ console.log(`lilolilo${filterOk}`);
             <div className={styles.containerDropSearch}>
               {" "}
               <FilterDropdownSearch
-                options={zonas}
+                options={totalZonas}
                 prompt={"Selecciona la zona:"}
                 value={valueDropdownSeacrh}
                 onChange={(val) => setValueDropdownSeacrh(val)}
@@ -355,33 +376,8 @@ console.log(`lilolilo${filterOk}`);
               <Buttonhome category={"Buscar"} />
             </div>
           </Link>
-
-          {/*<div className={styles.searchButton}>
-            <input
-              type="text"
-              placeholder="Escribe la Zona"
-              onChange={(event) => setSearchTerm(event.target.value)}
-            />
-            <select name="" id="" className={styles.zonaList}>
-              {zonas
-                .filter((value) => {
-                  if (searchTerm == "") {
-                    return value;
-                  } else if (
-                    value.zona.toLowerCase().includes(searchTerm.toLowerCase())
-                  ) {
-                    return value;
-                  }
-                })
-                .map((value, key) => (
-                  <option value={value.zona}>{value.zona}</option>
-                ))}
-            </select>
-                </div>*/}
         </nav>
       </div>
-      <ResultFilterToClickBuscar />
-      <h1>{filterResultType}</h1>
     </section>
   );
 };

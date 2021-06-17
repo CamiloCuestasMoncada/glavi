@@ -108,7 +108,7 @@ const {FiltroUi} = useFiltro();
          
             
           
-    <FiltroUi/>
+    
         
       </section>
       <footer>
