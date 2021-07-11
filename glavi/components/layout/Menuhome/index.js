@@ -2,13 +2,15 @@ import React, { useState, useEffect, useContext, useRef } from "react";
 import { ThemeContext } from "../../../context/GlobalContextApp";
 /*import Buttondrophome from "../../common/Buttondrophome/index";*/
 import Buttonhome from "../../common/Buttonhome/index";
+
+import ButtonBuscar from "../../common/ButtonBuscar/index";
 import styles from "./Menuhome.module.css";
 import useFiltro from "./../../../hooks/useFiltro";
 import axios from "axios";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Link from "next/link";
 
-const Menuhome = () => {
+export default function Menuhome() {
   useEffect(() => {
     const getZonas = async () => {
       const resultZonas = await axios.get(
@@ -17,6 +19,7 @@ const Menuhome = () => {
       const resultZonasEspecificas = await axios.get(
         "http://192.34.57.251/specificzones?_limit=-1"
       );
+      //debugger;
       setZonas(resultZonas.data);
       const zonas = resultZonas.data;
       const zonasEspecificas = resultZonasEspecificas.data;
@@ -31,6 +34,7 @@ const Menuhome = () => {
       const result = await axios.get(
         "http://192.34.57.251/tipo-De-Propiedades?_limit=-1"
       );
+
       setTipoDePropiedad(result.data);
     };
     getTipoPropiedad();
@@ -40,12 +44,14 @@ const Menuhome = () => {
         `http://192.34.57.251/inmuebles?_limit=-1`
       );
 
-      setInmuebles(resultado);
-      let ps = resultado.data;
+      setInmuebles(resultado.data);
+
+      /*let ps = resultado;
       let newe = Array.from(ps);
-      console.log(resultado.data);
-      console.log(newe);
+      console.log(resultado);
+      console.log(newe);*/
     };
+
     getInmuebles();
   }, []);
 
@@ -283,46 +289,89 @@ const Menuhome = () => {
     setActiveButton3(false);
   };
   const handleClickBuscar = () => {
-    if (selectedOptionZona && selectedOptionType) {
+    /*if (selectedOptionZona && selectedOptionType) {
       globalFilterResults();
     } else if (selectedOptionZona) {
       zonaFilterResults(selectedOptionZona);
     } else if (selectedOptionType) {
       typeFilterResults(selectedOptionType);
-    }
+    }*/
+    globalFilterResults();
   };
   //------------------------------------------------------------------------------------------------------------------
 
   //funciones encargadas de realizar los filtros
   const globalFilterResults = () => {
- 
-    let todosLosInmuebles = inmuebles.data;
-
-   /* function filtro(prop) {
-      let resultado = selectedOptionType[0];
-      let preFiltro;
-      const specificZona = prop?.specificzone?.zona || null;
-      if (prop.zona.zona === selectedOptionZona) {
-        preFiltro = prop.zona.zona;
-      } else if (specificZona === selectedOptionZona) {
-        preFiltro = specificZona;
-      }
-
-      inmueble.tipoDePropiedad.tipo === resultado;
-      setGlobalFilterResult(resultadoGlobal);
+    let todosLosInmuebles = inmuebles;
+    let getStringOptionType;
+    if (selectedOptionType) {
+      getStringOptionType = selectedOptionType[0];
     }
-    const resultadoGlobal = todosLosInmuebles.filter(filtro);*/
-    let resultado = selectedOptionType[0];
-    function filtro(prop){
-      debugger;
-        const specificZona = prop?.specificzone?.zona || null;
-        if(prop.tipoDePropiedad.tipo === resultado){
-          if(prop.zona.zona===selectedOptionZona || specificZona===selectedOptionZona){
+
+    function filtro(prop) {
+      
+      const tipoDePropiedad = prop?.tipoDePropiedad?.tipo || null;
+      const specificZona = prop?.specificzone?.zona || null;
+      const zona = prop?.zona?.zona || null;
+      const selectTypeOfBusiness = activeButton || activeButton2 || null;
+      const selectTypeZona = zona || specificZona || null;
+      let resultTypeOfBusiness;
+      if (selectTypeOfBusiness && selectedOptionZona && selectedOptionType) {
+        if (activeButton) {
+          resultTypeOfBusiness = prop.disponible_venta;
+        } else if (activeButton2) {
+          resultTypeOfBusiness = prop.disponible_arriendo;
+        }
+        if (resultTypeOfBusiness?.confirmar === "si") {
+          if (
+            tipoDePropiedad === getStringOptionType &&
+            selectTypeZona === selectedOptionZona
+          ) {
             return true;
-            
           }
         }
-      
+      } else if (selectTypeOfBusiness && selectedOptionZona) {
+        if (activeButton) {
+          resultTypeOfBusiness = prop.disponible_venta;
+        } else if (activeButton2) {
+          resultTypeOfBusiness = prop.disponible_arriendo;
+        }
+        if (resultTypeOfBusiness?.confirmar === "si") {
+          if (selectTypeZona === selectedOptionZona) {
+            return true;
+          }
+        }
+      } else if (selectTypeOfBusiness && selectedOptionType) {
+        if (activeButton) {
+          resultTypeOfBusiness = prop.disponible_venta;
+        } else if (activeButton2) {
+          resultTypeOfBusiness = prop.disponible_arriendo;
+        }
+        if (resultTypeOfBusiness?.confirmar === "si") {
+          if (tipoDePropiedad === getStringOptionType) {
+            return true;
+          }
+        }
+      } else if (selectTypeOfBusiness) {
+        if (activeButton) {
+          resultTypeOfBusiness = prop.disponible_venta;
+        } else if (activeButton2) {
+          resultTypeOfBusiness = prop.disponible_arriendo;
+        }
+        if (resultTypeOfBusiness?.confirmar === "si") {
+          return true;
+        }
+      } else if (selectedOptionZona) {
+        if (selectTypeZona === selectedOptionZona) {
+          return true;
+        }
+      } else if (selectedOptionType) {
+        if (tipoDePropiedad === getStringOptionType) {
+          return true;
+        }
+      }else {
+        return true;
+      }
     }
     const resultadoGlobal = todosLosInmuebles.filter(filtro);
     setGlobalFilterResult(resultadoGlobal);
@@ -371,19 +420,46 @@ const Menuhome = () => {
             />
           </div>
 
-          <Link as={`/inmuebles/${selectedOptionType}`} href="/inmuebles/[id]">
-            <div className={styles.buttonSearch} onClick={handleClickBuscar}>
-              <Buttonhome category={"Buscar"} />
-            </div>
-          </Link>
+          <div className={styles.buttonSearch} onClick={handleClickBuscar}>
+            <ButtonBuscar category={"Buscar"} />
+          </div>
         </nav>
       </div>
     </section>
   );
-};
-
-export default Menuhome;
+}
 
 export function resultados() {
   return <p>{mostrarResultadoType}</p>;
 }
+
+/*export async function getStaticProps() {
+  const zonas = await fetch("http://192.34.57.251/zonas?_limit=-1");
+  const zonasEspecificas = await fetch(
+    "http://192.34.57.251/specificzones?_limit=-1"
+  );
+
+  const tipoDePropiedad = await fetch(
+    "http://192.34.57.251/tipo-De-Propiedades?_limit=-1"
+  );
+  const inmueblesEnGeneral = await fetch(
+    `http://192.34.57.251/inmuebles?_limit=-1`
+  );
+
+  const resultado = await fetch(`http://192.34.57.251/inmuebles?_limit=-1`);
+  const propiedadesDestacadas = await resultado.json();
+  const resultZonas = await zonas.json();
+  const resultZonasEspecificas = await zonasEspecificas.json();
+  const resultTipoDePropiedad = await tipoDePropiedad.json();
+  const resultadoInmueblesEnGeneral = await inmueblesEnGeneral.json();
+
+  return {
+    props: {
+      resultZonas,
+      resultZonasEspecificas,
+      resultTipoDePropiedad,
+      resultadoInmueblesEnGeneral,
+    },
+    revalidate: 1,
+  };
+}*/
