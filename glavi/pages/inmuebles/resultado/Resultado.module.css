@@ -1,0 +1,35 @@
+.titulo{
+    font-family: 'Inter', sans-serif;
+    font-weight: 800;
+    font-size: 30px;
+    color: #a0bde9;
+    margin-top: 100px;
+    
+}
+
+.titulo__container{
+    display: flex;
+    padding: 20px;
+}
+
+.infoGeneral__container{
+    display: flex;
+}
+
+.infoGenral__descripcion__container{
+    width: 50vw;
+    padding: 20px;
+}
+
+.infoGenral__descripcion__container p{
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: #39414e;
+   
+}
+
+.infoGenral__data{
+    width: 50vw;
+    display: flex;
+}

@@ -22,6 +22,8 @@ import HotelIcon from "@material-ui/icons/Hotel";
 import styles from "./Card.module.css";
 import Grid from "@material-ui/core/Grid";
 import AspectRatio from "@material-ui/icons/AspectRatio";
+import Link from "next/link";
+
 
 //import ReactImageProcess from "react-image-process";
 //import watermarkImage from "./../../../public/logowatermark.png";
@@ -94,7 +96,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EstateCard({inmuebles}) {
+export default function EstateCardFilter({inmuebles}) {
   
 
  
@@ -146,9 +148,13 @@ export default function EstateCard({inmuebles}) {
   };
 
   return (
+    
     <div className={styles.container_cards}>
       {inmuebles.map((inmueble) => (
         <div className={styles.individualCard} key={inmueble.id}>
+          
+          <Link as={`/inmuebles/resultado/${inmueble.slug}`} href="/inmuebles/resultado/[id]"> 
+          
           <Card className={classes.root}>
             <div className={classes.titulo}>{inmueble.titulo}</div>
             <div className={classes.subtitulo}>
@@ -222,8 +228,10 @@ export default function EstateCard({inmuebles}) {
             </CardActions>
             
           </Card>
+          </Link>
         </div>
       ))}
     </div>
+   
   );
 }

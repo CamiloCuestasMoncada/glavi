@@ -1,38 +1,35 @@
 import styles from "./Buttonhome.module.css";
 import React, { useState } from "react";
+import Link from "next/link";
 
-function Buttonmenu(props) {
+function ButtonBuscar(props) {
   const [clickColor, setClickColor] = useState(true);
 
   //hooks globales
-  
-  
-    let styleButtonColor;
+
+  let styleButtonColor;
   function ChangueColorButton() {
     let stylesDefualt = styles.button;
     let stylesClick = styles.buttonClick;
-    
+
     /*if(props.click===true){
         clickColor ? styleButtonColor= stylesDefualt : styleButtonColor= stylesClick;
     }else{
       styleButtonColor= stylesDefualt;
     }*/
 
-    
-    props.click ? styleButtonColor= stylesClick :  styleButtonColor= stylesDefualt;
+    props.click
+      ? (styleButtonColor = stylesClick)
+      : (styleButtonColor = stylesDefualt);
 
-    return <button  className={styleButtonColor}>{props.category}</button>;
-   
+    return (
+      <Link as={`/inmuebles/apartamento`} href="/inmuebles/[id]">
+        <button className={styleButtonColor}>{props.category}</button>
+      </Link>
+    );
   }
 
-  return (
-    <>
-     
-      <ChangueColorButton/>
-      
-    </>
-  );
+  return <ChangueColorButton />;
 }
 
-export default Buttonmenu;
-
+export default ButtonBuscar;

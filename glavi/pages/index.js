@@ -2,7 +2,7 @@ import Header from "../components/layout/Header/index";
 import Head from "next/head";
 import styles from "../styles/Home.module.css";
 import useInmuebles from './../hooks/useInmuebles';
-import RecipeReviewCard from "../components/common/Card/index";
+import EstateCard from "../components/common/Card/index";
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -33,19 +33,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Home() {
+export default function Home({propiedadesDestacadas}) {
  
   const [inmuebles, setInmuebles] = useState([]);
 
   useEffect(() => {
-    const getInmuebles = async () => {
+    /*const getInmuebles = async () => {
       
 
       const resultado = await axios.get(`http://192.34.57.251/inmuebles?_limit=-1`);
       setInmuebles(resultado.data);
       console.log(resultado);
     };
-    getInmuebles();
+    getInmuebles();*/
+    
+    setInmuebles(propiedadesDestacadas);
   }, []);
 
   
@@ -103,12 +105,12 @@ const {FiltroUi} = useFiltro();
 
         
         <div className={styles.container_cardsInmuebles}>
-        <RecipeReviewCard inmuebles = {filtraDestacados(inmuebles)}/>
+        <EstateCard inmuebles = {filtraDestacados(inmuebles)}/>
         </div>
          
             
           
-    <FiltroUi/>
+    
         
       </section>
       <footer>
@@ -118,3 +120,16 @@ const {FiltroUi} = useFiltro();
   );
 }
 
+
+
+export async function getStaticProps() {
+ 
+  const resultado = await fetch(`http://192.34.57.251/inmuebles?_limit=-1`);
+  const propiedadesDestacadas = await resultado.json();
+  
+
+  return {
+    props: { propiedadesDestacadas, },
+    revalidate: 1,
+  };
+}
